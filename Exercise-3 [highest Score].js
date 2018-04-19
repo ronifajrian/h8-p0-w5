@@ -3,57 +3,41 @@ function highestScore (students) {
   if (students.length == 0) {
     return "{}"
   } else {
-    var classRank = {}
-    var dataRank = {}
+    var obj = {}
+    var arrClass = []
+    var arrScore = []
 
-    var arrClass = [students[0].class]
-    for (var i = 0; i < students.length - 1; i++) {
-      if (!arrClass.includes(students[i+1].class)) {
-        arrClass.push(students[i+1].class)
+    for (var i = 0; i < students.length; i++) {
+      if (!arrClass.includes(students[i].class)) {
+        arrClass.push(students[i].class)
       }
     }
-
-    var finalArrScore = []
-    for (var i = 0; i < arrClass.length; i++) {
-      var arrScore = []
-      for (var j = 0; j < students.length; j++) {
-        if (arrClass[i] == students[j].class ) {
-          arrScore.push(students[j].score)
-        }
-      }
-      finalArrScore.push(arrScore)
-    }
-
-    var arrMax = []
-    for (var i = 0; i < finalArrScore.length; i++) {
-      var max = finalArrScore[i][0]
-      for (var j = 0; j < finalArrScore[i].length - 1; j++) {
-        var n = j + 1
-        if (max < finalArrScore[n]) {
-          max = finalArrScore[n]
-        }
-      }
-      arrMax.push(max)
-    }
-
-    var person = []
-    for (var i = 0; i < arrMax.length; i++) {
-      for (var j = 0; j < students.length; j++) {
-        if (arrMax[i] == students[j].score) {
-          person.push(students[j].name)
-        }
-      }
-    }
-
 
     for (var i = 0; i < arrClass.length; i++) {
-      var set = arrClass[i]
-      classRank[set] = {} // bikin nama property object dari variable tampungan set
-      classRank[set].name = person[i]
-      classRank[set].score = arrMax[i]
+      var arrData = []
+      for (var j = 0; j < students.length; j++) {
+        var data = {}
+        if (students[j].class == arrClass[i]) {
+          data.name = students[j].name
+          data.score = students[j].score
+          arrData.push(data)
+        }
+      }
+      obj[arrClass[i]] = arrData
     }
 
-    return classRank
+    for (var i = 0; i < arrClass.length; i++) {
+      var maxScore = obj[arrClass[i]][0].score
+      var dataMax = obj[arrClass[i]][0]
+      for (var j = 0; j < obj[arrClass[i]].length - 1; j++) {
+        if (maxScore < obj[arrClass[i]][j+1].score) {
+          maxScore = obj[arrClass[i]][j+1].score
+          dataMax = obj[arrClass[i]][j+1]
+        }
+      }
+      obj[arrClass[i]] = dataMax
+    }
+    return obj
   }
 }
 
